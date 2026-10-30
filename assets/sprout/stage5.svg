@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- 5단계: 꽃이 핀 다 자란 식물 -->
+  <path d="M100 128 L100 42" stroke="#3a8f57" stroke-width="5" stroke-linecap="round"/>
+  <path d="M100 108 Q84 94 76 106 Q88 116 100 108 Z" fill="#4caf6e"/>
+  <path d="M100 108 Q116 94 124 106 Q112 116 100 108 Z" fill="#4caf6e"/>
+  <path d="M100 88 Q76 66 62 84 Q80 100 100 88 Z" fill="#4caf6e"/>
+  <path d="M100 88 Q124 66 138 84 Q120 100 100 88 Z" fill="#4caf6e"/>
+  <path d="M100 66 Q76 44 62 62 Q80 78 100 66 Z" fill="#5cc07c"/>
+  <path d="M100 66 Q124 44 138 62 Q120 78 100 66 Z" fill="#5cc07c"/>
+  <circle cx="100" cy="26" r="9" fill="#f7b2a6"/>
+  <circle cx="114" cy="36" r="9" fill="#f7b2a6"/>
+  <circle cx="109" cy="52" r="9" fill="#f7b2a6"/>
+  <circle cx="91" cy="52" r="9" fill="#f7b2a6"/>
+  <circle cx="86" cy="36" r="9" fill="#f7b2a6"/>
+  <circle cx="100" cy="40" r="8" fill="#ffd66b"/>
+  <path d="M150 40 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3 Z" fill="#ffd66b"/>
+  <path d="M48 64 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 Z" fill="#ffd66b"/>
+  <!-- 화분 (얼굴 포함) -->
+  <path d="M52 140 L148 140 L138 190 L62 190 Z" fill="#e8a87c"/>
+  <rect x="44" y="128" width="112" height="16" rx="6" fill="#d9925f"/>
+  <ellipse cx="100" cy="129" rx="48" ry="5" fill="#8b6b4a"/>
+  <circle cx="85" cy="160" r="4" fill="#3d3a35"/>
+  <circle cx="115" cy="160" r="4" fill="#3d3a35"/>
+  <path d="M93 168 Q100 174 107 168" stroke="#3d3a35" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <ellipse cx="74" cy="168" rx="7" ry="4" fill="#f7b2a6"/>
+  <ellipse cx="126" cy="168" rx="7" ry="4" fill="#f7b2a6"/>
+</svg>

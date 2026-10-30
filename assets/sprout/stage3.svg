@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- 3단계: 본잎 -->
+  <path d="M100 128 L100 82" stroke="#3a8f57" stroke-width="5" stroke-linecap="round"/>
+  <path d="M100 108 Q84 94 76 106 Q88 116 100 108 Z" fill="#4caf6e"/>
+  <path d="M100 108 Q116 94 124 106 Q112 116 100 108 Z" fill="#4caf6e"/>
+  <path d="M100 84 Q76 62 62 80 Q80 96 100 84 Z" fill="#4caf6e"/>
+  <path d="M100 84 Q124 62 138 80 Q120 96 100 84 Z" fill="#4caf6e"/>
+  <!-- 화분 (얼굴 포함) -->
+  <path d="M52 140 L148 140 L138 190 L62 190 Z" fill="#e8a87c"/>
+  <rect x="44" y="128" width="112" height="16" rx="6" fill="#d9925f"/>
+  <ellipse cx="100" cy="129" rx="48" ry="5" fill="#8b6b4a"/>
+  <circle cx="85" cy="160" r="4" fill="#3d3a35"/>
+  <circle cx="115" cy="160" r="4" fill="#3d3a35"/>
+  <path d="M93 168 Q100 174 107 168" stroke="#3d3a35" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <ellipse cx="74" cy="168" rx="7" ry="4" fill="#f7b2a6"/>
+  <ellipse cx="126" cy="168" rx="7" ry="4" fill="#f7b2a6"/>
+</svg>

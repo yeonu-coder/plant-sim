@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- 1단계: 씨앗 -->
+  <ellipse cx="100" cy="124" rx="11" ry="7" fill="#a07a52"/>
+  <path d="M96 120 Q100 116 104 120" stroke="#4caf6e" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- 화분 (얼굴 포함) -->
+  <path d="M52 140 L148 140 L138 190 L62 190 Z" fill="#e8a87c"/>
+  <rect x="44" y="128" width="112" height="16" rx="6" fill="#d9925f"/>
+  <ellipse cx="100" cy="129" rx="48" ry="5" fill="#8b6b4a"/>
+  <circle cx="85" cy="160" r="4" fill="#3d3a35"/>
+  <circle cx="115" cy="160" r="4" fill="#3d3a35"/>
+  <path d="M93 168 Q100 174 107 168" stroke="#3d3a35" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <ellipse cx="74" cy="168" rx="7" ry="4" fill="#f7b2a6"/>
+  <ellipse cx="126" cy="168" rx="7" ry="4" fill="#f7b2a6"/>
+</svg>

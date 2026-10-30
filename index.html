@@ -16,7 +16,7 @@
         <h1 class="title">새싹 키우기</h1>
         <p class="subtitle">
           새싹을 키우며 몇 가지 질문에 답하면
-          우리 집에 딱 맞는 식물 3가지를 추천해&nbsp;드려요.
+          우리&nbsp;집에 딱 맞는 식물 3가지를 추천해&nbsp;드려요.
         </p>
       </div>
 
@@ -43,12 +43,43 @@
       </div>
     </section>
 
-    <!-- 2. 시뮬레이션 게임 화면 (3단계에서 완성) -->
+    <!-- 2. 시뮬레이션 게임 화면 -->
     <section id="screen-game" class="screen">
-      <div class="card center">
-        <p class="hero-sprout" aria-hidden="true">🌱</p>
-        <h2 class="card-title">게임 화면은 3단계에서 만들어요</h2>
-        <p class="muted">선택한 경험 수준: <strong id="chosen-level"></strong></p>
+      <div class="game-top">
+        <button class="back-btn" id="back-btn" aria-label="이전 질문">←</button>
+        <div class="progress">
+          <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+          <span class="progress-text" id="progress-text"></span>
+        </div>
+      </div>
+
+      <div class="sprout-stage">
+        <span class="grow-pop" id="grow-pop">쑥쑥!</span>
+        <img class="sprout-img" id="sprout-img" src="./assets/sprout/stage1.svg" alt="자라는 새싹">
+        <p class="stage-name" id="stage-name"></p>
+      </div>
+
+      <!-- 질문 카드 -->
+      <div class="card" id="question-card">
+        <span class="action-chip" id="question-action"></span>
+        <h2 class="card-title" id="question-text"></h2>
+        <div class="option-list" id="option-list"></div>
+      </div>
+
+      <!-- 다 자랐을 때 -->
+      <div class="card center" id="game-done" hidden>
+        <h2 class="card-title">새싹이 다 자랐어요! 🌸</h2>
+        <p class="muted">이제 나에게 맞는 식물을 알아볼까요?</p>
+        <button class="btn btn-main" data-go="screen-result">추천 결과 보기</button>
+      </div>
+    </section>
+
+    <!-- 3. 결과 화면 (4단계에서 완성) -->
+    <section id="screen-result" class="screen">
+      <div class="card">
+        <h2 class="card-title">결과 화면은 4단계에서 만들어요</h2>
+        <p class="muted">지금은 저장된 답변만 보여줘요.</p>
+        <pre class="debug" id="answers-debug"></pre>
         <button class="btn btn-sub" data-go="screen-start">처음으로</button>
       </div>
     </section>
