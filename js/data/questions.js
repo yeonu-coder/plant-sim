@@ -5,15 +5,14 @@
 
 window.QUESTIONS = [
   {
-    key: "waterTime",
+    key: "waterCare",
     icon: "💧",
     action: "물 주기",
-    text: "새싹에게 물을 줄 시간이에요! 평소 언제 시간이 나나요?",
+    text: "새싹에게 물을 줄 시간이에요! 평소 물을 얼마나 자주 챙길 수 있나요?",
     options: [
-      { label: "아침", emoji: "🌅", value: "morning" },
-      { label: "낮", emoji: "☀️", value: "day" },
-      { label: "저녁·밤", emoji: "🌙", value: "night" },
-      { label: "그때그때 달라요", emoji: "🎲", value: "random" }
+      { label: "자주 챙길 수 있어요", emoji: "😊", value: 1 },
+      { label: "가끔 잊어요", emoji: "😅", value: 2 },
+      { label: "거의 못 챙겨요", emoji: "😴", value: 3 }
     ]
   },
   {
@@ -66,8 +65,8 @@ window.QUESTIONS = [
     action: "친구 소개",
     text: "새싹과 같이 사는 반려동물이 있나요?",
     options: [
-      { label: "있어요", emoji: "🐶", value: true },
-      { label: "없어요", emoji: "🙅", value: false }
+      { label: "반려동물이 있어요", emoji: "🐶", value: true },
+      { label: "반려동물이 없어요", emoji: "🙅", value: false }
     ]
   },
   {

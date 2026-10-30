@@ -74,13 +74,19 @@
       </div>
     </section>
 
-    <!-- 3. 결과 화면 (4단계에서 완성) -->
+    <!-- 3. 결과 화면 -->
     <section id="screen-result" class="screen">
-      <div class="card">
-        <h2 class="card-title">결과 화면은 4단계에서 만들어요</h2>
-        <p class="muted">지금은 저장된 답변만 보여줘요.</p>
-        <pre class="debug" id="answers-debug"></pre>
-        <button class="btn btn-sub" data-go="screen-start">처음으로</button>
+      <div class="result-hero">
+        <img class="result-character" src="./assets/sprout/stage5.svg" alt="다 자란 식물 캐릭터">
+        <h2 class="result-title">새싹이 다 자라서<br>꼭 맞는 친구 3명을 데려왔어요!</h2>
+      </div>
+
+      <div class="answer-chips" id="answer-chips"></div>
+      <div class="plant-cards" id="plant-cards"></div>
+
+      <p class="small-note">식물 정보는 AI 초안이라 실제와 다를 수 있어요.</p>
+      <div class="center">
+        <button class="btn btn-sub" data-go="screen-start">처음부터 다시 하기</button>
       </div>
     </section>
 
@@ -89,6 +95,8 @@
   <script src="./js/data/plants.js"></script>
   <script src="./js/data/questions.js"></script>
   <script src="./js/data/shops.js"></script>
+  <script src="./js/recommend.js"></script>
+  <script src="./js/plant-image.js"></script>
   <script src="./js/app.js"></script>
 </body>
 </html>

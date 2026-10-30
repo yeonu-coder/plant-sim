@@ -15,7 +15,7 @@ function showScreen(id) {
     screen.classList.toggle("is-active", screen.id === id);
   });
   window.scrollTo(0, 0);
-  if (id === "screen-result") showAnswersDebug();
+  if (id === "screen-result") renderResult();
 }
 
 // ===== 시작 화면 =====
@@ -106,11 +106,58 @@ function playGrow() {
   });
 }
 
-// ===== 결과 화면 (4단계 전까지 확인용) =====
-function showAnswersDebug() {
-  const lines = ["경험 수준: " + LEVEL_NAMES[state.level]];
+// ===== 결과 화면 =====
+const LIGHT_LABELS = { 1: "그늘 OK", 2: "밝은 간접광", 3: "햇빛 좋아함" };
+const DIFFICULTY_LABELS = { 1: "쉬움", 2: "보통", 3: "어려움" };
+
+function petLabel(petSafe) {
+  if (petSafe === true) return "🐾 반려동물 안전";
+  if (petSafe === false) return "⚠️ 반려동물 주의";
+  return "❓ 반려동물 확인 필요";
+}
+
+function renderResult() {
+  // 내가 고른 답변을 작은 이름표로 보여주기
+  const chips = document.getElementById("answer-chips");
+  chips.innerHTML = "";
+  const labels = ["🌱 " + LEVEL_NAMES[state.level]];
   QUESTIONS.forEach((q) => {
-    lines.push(q.action + " (" + q.key + "): " + JSON.stringify(state.answers[q.key]));
+    const option = q.options.find((o) => o.value === state.answers[q.key]);
+    if (option) labels.push(q.icon + " " + option.label);
   });
-  document.getElementById("answers-debug").textContent = lines.join("\n");
+  labels.forEach((text) => {
+    const chip = document.createElement("span");
+    chip.className = "chip";
+    chip.textContent = text;
+    chips.appendChild(chip);
+  });
+
+  // 추천 카드 3장
+  const list = document.getElementById("plant-cards");
+  list.innerHTML = "";
+  recommendPlants(state.answers, state.level).forEach((item, i) => {
+    const p = item.plant;
+    const card = document.createElement("article");
+    card.className = "plant-card";
+    card.appendChild(createPlantImage(p, "plant-thumb"));
+
+    const body = document.createElement("div");
+    body.className = "plant-body";
+    body.innerHTML = `
+      <div class="plant-rank">추천 ${i + 1}</div>
+      <h3 class="plant-name">${p.name}</h3>
+      <p class="plant-summary">${p.summary}</p>
+      <p class="plant-reason">✔ ${item.reason}</p>
+      <ul class="plant-facts">
+        <li>☀️ ${LIGHT_LABELS[p.light]}</li>
+        <li>💧 약 ${p.waterDays}일에 한 번</li>
+        <li>⭐ ${DIFFICULTY_LABELS[p.difficulty]}</li>
+        <li>${petLabel(p.petSafe)}</li>
+        <li>⏳ 수명: ${p.lifespan || "확인 중"}</li>
+      </ul>
+      ${p.source === "AI 초안" ? '<span class="draft-badge">AI 초안 정보</span>' : ""}
+    `;
+    card.appendChild(body);
+    list.appendChild(card);
+  });
 }
