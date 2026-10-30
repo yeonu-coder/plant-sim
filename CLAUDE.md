@@ -75,6 +75,7 @@ plant-sim/
   difficulty: 1,               // 관리 난이도: 1 쉬움 / 2 보통 / 3 어려움
   petSafe: false,              // 반려동물 안전 여부: true / false / null(확인 필요)
   size: 3,                     // 공간: 1 작음(책상) / 2 중간(선반) / 3 큼(바닥)
+  price: 35000,                // 시연용 가상 기본 가격(원). 꽃집별 priceRate를 곱함
 
   flowerLanguage: null,        // 꽃말. 확실하지 않으면 null → 화면에 "확인 중"
   source: "AI 초안"            // 출처. 사용자가 직접 확인하면 바꿈
