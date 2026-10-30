@@ -26,6 +26,16 @@ body {
   word-break: keep-all; /* 한국어 단어가 중간에 잘리지 않게 */
 }
 
+/* 제목·짧은 문구는 줄 길이를 고르게 나눠서 마지막 단어만 떨어지지 않게 */
+h1, h2, h3, .subtitle {
+  text-wrap: balance;
+}
+
+/* 긴 문단은 마지막 줄에 한 단어만 남지 않게 */
+p {
+  text-wrap: pretty;
+}
+
 button {
   font: inherit;
   color: inherit;
