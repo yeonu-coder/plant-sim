@@ -1,0 +1,172 @@
+/* ===== 색상과 기본값 (여기만 바꾸면 전체 색이 바뀌어요) ===== */
+:root {
+  --green: #4caf6e;        /* 포인트 색 */
+  --green-dark: #3a8f57;   /* 눌렀을 때 */
+  --green-light: #e4f4e8;  /* 연한 배경 */
+  --bg: #fdf8ef;           /* 따뜻한 아이보리 배경 */
+  --card: #ffffff;
+  --text: #3d3a35;
+  --muted: #8a847a;
+  --line: #ece4d6;
+  --radius: 20px;
+  --shadow: 0 4px 14px rgba(120, 100, 70, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+  line-height: 1.6;
+  word-break: keep-all; /* 한국어 단어가 중간에 잘리지 않게 */
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* ===== 전체 틀: 모바일 폭 기준, 넓은 화면에선 가운데 ===== */
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 32px 16px 48px;
+  min-height: 100vh;
+}
+
+/* ===== 화면 전환: is-active가 붙은 화면만 보임 ===== */
+.screen {
+  display: none;
+}
+
+.screen.is-active {
+  display: block;
+  animation: fade-in 0.35s ease;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== 공통 카드와 글자 ===== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px 20px;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+}
+
+.center {
+  text-align: center;
+}
+
+.muted {
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+/* ===== 공통 버튼 ===== */
+.btn {
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: 999px;
+  border: none;
+  font-weight: 700;
+  transition: transform 0.1s, background 0.2s;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-sub {
+  background: var(--green-light);
+  color: var(--green-dark);
+}
+
+/* ===== 시작 화면 ===== */
+.hero {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.hero-sprout {
+  font-size: 4.5rem;
+  line-height: 1;
+  margin-bottom: 12px;
+  display: inline-block;
+  animation: sway 2.4s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-4deg); }
+  50%      { transform: rotate(4deg); }
+}
+
+.title {
+  font-size: 2rem;
+  color: var(--green-dark);
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.level-list {
+  display: grid;
+  gap: 10px;
+}
+
+.level-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 16px;
+  background: var(--bg);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  text-align: left;
+  transition: border-color 0.2s, background 0.2s, transform 0.1s;
+}
+
+.level-btn:hover {
+  border-color: var(--green);
+  background: var(--green-light);
+}
+
+.level-btn:active {
+  transform: scale(0.98);
+}
+
+.level-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.level-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.level-text small {
+  color: var(--muted);
+  font-size: 0.85rem;
+}

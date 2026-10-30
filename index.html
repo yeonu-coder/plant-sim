@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>새싹 키우기 - 나에게 맞는 식물 찾기</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <main class="app">
+
+    <!-- 1. 시작 화면 -->
+    <section id="screen-start" class="screen is-active">
+      <div class="hero">
+        <div class="hero-sprout" aria-hidden="true">🌱</div>
+        <h1 class="title">새싹 키우기</h1>
+        <p class="subtitle">
+          새싹을 키우며 몇 가지 질문에 답하면<br>
+          우리 집에 딱 맞는 식물 3가지를 추천해 드려요.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">식물 키우기 경험이 어느 정도인가요?</h2>
+        <div class="level-list">
+          <button class="level-btn" data-level="1">
+            <span class="level-icon">🌰</span>
+            <span class="level-text"><strong>입문자</strong><small>식물을 키워본 적이 없어요</small></span>
+          </button>
+          <button class="level-btn" data-level="2">
+            <span class="level-icon">🌱</span>
+            <span class="level-text"><strong>초보자</strong><small>한두 번 키워봤어요</small></span>
+          </button>
+          <button class="level-btn" data-level="3">
+            <span class="level-icon">🪴</span>
+            <span class="level-text"><strong>중급자</strong><small>몇 가지 식물을 잘 키우고 있어요</small></span>
+          </button>
+          <button class="level-btn" data-level="4">
+            <span class="level-icon">🌳</span>
+            <span class="level-text"><strong>고수</strong><small>까다로운 식물도 자신 있어요</small></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 시뮬레이션 게임 화면 (3단계에서 완성) -->
+    <section id="screen-game" class="screen">
+      <div class="card center">
+        <p class="hero-sprout" aria-hidden="true">🌱</p>
+        <h2 class="card-title">게임 화면은 3단계에서 만들어요</h2>
+        <p class="muted">선택한 경험 수준: <strong id="chosen-level"></strong></p>
+        <button class="btn btn-sub" data-go="screen-start">처음으로</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="./js/app.js"></script>
+</body>
+</html>
