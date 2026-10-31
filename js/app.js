@@ -3,6 +3,7 @@ const state = {
   level: null,   // 경험 수준: 1 입문자 / 2 초보자 / 3 중급자 / 4 고수
   answers: {},   // 질문 key별 답변 값 (예: { light: 2, pet: true })
   step: 0,       // 지금 몇 번째 질문인지 (0부터 시작)
+  selectedPlant: null, // 상세보기에서 고른 식물
 };
 
 const LEVEL_NAMES = { 1: "입문자", 2: "초보자", 3: "중급자", 4: "고수" };
@@ -156,8 +157,128 @@ function renderResult() {
         <li>⏳ 수명: ${p.lifespan || "확인 중"}</li>
       </ul>
       ${p.source === "AI 초안" ? '<span class="draft-badge">AI 초안 정보</span>' : ""}
+      <button class="btn btn-sub btn-small detail-btn">자세히 보기</button>
     `;
+    body.querySelector(".detail-btn").addEventListener("click", () => openDetail(p));
     card.appendChild(body);
     list.appendChild(card);
   });
 }
+
+// ===== 상세보기 =====
+const LIGHT_DETAIL = { 1: "그늘에서도 괜찮아요", 2: "밝은 간접광을 좋아해요", 3: "햇빛을 많이 좋아해요" };
+const HUMIDITY_DETAIL = { 1: "건조해도 괜찮아요", 2: "보통 습도", 3: "촉촉한 공기를 좋아해요" };
+const DIFFICULTY_STARS = { 1: "★☆☆ 쉬움", 2: "★★☆ 보통", 3: "★★★ 어려움" };
+const PET_DETAIL = { true: "함께 지내도 안전해요", false: "주의가 필요해요 (먹으면 해로울 수 있어요)", null: "아직 확인 중이에요" };
+const NONGSARO_SOURCE = "출처: 농촌진흥청 농사로 「실내정원용 식물」";
+
+// 흙 상태별 물 주기 확인 방법
+const WATER_HOW = {
+  wet: "흙이 마르지 않도록 매일 확인해 주세요",
+  moist: "마르기 전에 자주 확인해 주세요 (보통 2~3일)",
+  surface: "손가락을 흙에 2~3cm 넣어 보고, 말라 있으면 흠뻑 주세요",
+  dry: "나무젓가락을 흙 깊이 꽂았다 빼서, 젖은 흙이 묻어나지 않으면 흠뻑 주세요",
+};
+
+// 농사로 원문이 있으면 원문 문구로, 없으면(AI 초안) 일수로 흙 상태 종류를 정해요.
+function waterKind(text, days) {
+  if (text) {
+    if (text.includes("축축")) return "wet";
+    if (text.includes("촉촉")) return "moist";
+    if (text.includes("대부분")) return "dry";
+    return "surface";
+  }
+  if (days <= 1) return "wet";
+  if (days <= 3) return "moist";
+  if (days <= 10) return "surface";
+  return "dry";
+}
+
+function waterPeriod(days) {
+  if (days <= 1) return "거의 매일";
+  if (days <= 3) return "보통 2~3일쯤";
+  if (days <= 5) return "보통 4~5일쯤";
+  if (days <= 8) return "보통 일주일쯤";
+  if (days <= 11) return "보통 열흘쯤";
+  if (days <= 16) return "보통 2주쯤";
+  if (days <= 24) return "보통 3주쯤";
+  return "보통 한 달쯤";
+}
+
+function waterHTML(p) {
+  const text = p.waterTextSpringSummer;
+  const kind = waterKind(text, p.waterDays);
+  // "촉촉" 확인 방법에는 이미 기간이 들어 있어서 기간 줄을 따로 쓰지 않아요.
+  const period = kind === "moist" ? "" : `<p class="water-period">(${waterPeriod(p.waterDays)})</p>`;
+
+  let html = text
+    ? `<p class="water-main">${text}</p>${period}`
+    : `<p class="water-main">${waterPeriod(p.waterDays)}</p>`;
+  html += `<p class="water-how">👉 ${WATER_HOW[kind]}</p>`;
+
+  if (p.waterTextWinter) {
+    html += `
+      <div class="water-winter">
+        <p class="water-season">❄️ 겨울에는</p>
+        <p class="water-main">${p.waterTextWinter}</p>
+        <p class="water-how">👉 ${WATER_HOW[waterKind(p.waterTextWinter)]}</p>
+      </div>`;
+  }
+  return html;
+}
+
+function sourceHTML(p) {
+  if (p.source === "AI 초안") return '<span class="draft-badge">AI 초안 정보</span>';
+  const note = p.sourceNote ? `<br>(${p.sourceNote})` : "";
+  return `${p.source === "농사로 공공데이터" ? NONGSARO_SOURCE : "출처: " + p.source}${note}`;
+}
+
+function openDetail(p) {
+  const content = document.getElementById("detail-content");
+  content.innerHTML = `
+    <div class="detail-head">
+      <div class="detail-image"></div>
+      <div>
+        <h2 class="detail-name" id="detail-name">${p.name}</h2>
+        <p class="plant-summary">${p.summary}</p>
+      </div>
+    </div>
+
+    <section class="water-box">
+      <h3 class="water-title">💧 물 주기</h3>
+      ${waterHTML(p)}
+    </section>
+
+    <dl class="detail-facts">
+      <div><dt>📏 다 자란 크기</dt><dd>${p.matureSize || "확인 중"}</dd></div>
+      <div><dt>☀️ 빛</dt><dd>${LIGHT_DETAIL[p.light]}</dd></div>
+      <div><dt>🌡️ 적정 온도</dt><dd>${p.tempMin}~${p.tempMax}℃</dd></div>
+      <div><dt>💦 습도</dt><dd>${HUMIDITY_DETAIL[p.humidity]}</dd></div>
+      <div><dt>⭐ 관리 난이도</dt><dd>${DIFFICULTY_STARS[p.difficulty]}</dd></div>
+      <div><dt>🐾 반려동물</dt><dd>${PET_DETAIL[String(p.petSafe)]}</dd></div>
+      <div><dt>⏳ 수명</dt><dd>${p.lifespan || "확인 중"}</dd></div>
+      <div><dt>🌸 꽃말</dt><dd>${p.flowerLanguage || "확인 중"}</dd></div>
+    </dl>
+
+    <p class="detail-source">${sourceHTML(p)}</p>
+  `;
+  content.querySelector(".detail-image").appendChild(createPlantImage(p, "plant-thumb"));
+
+  state.selectedPlant = p; // 6단계 구매 화면에서 사용
+  document.getElementById("adopt-note").hidden = true;
+  const dialog = document.getElementById("detail-dialog");
+  dialog.showModal();
+  dialog.querySelector(".detail-inner").scrollTop = 0;
+}
+
+const detailDialog = document.getElementById("detail-dialog");
+document.getElementById("detail-close").addEventListener("click", () => detailDialog.close());
+// 팝업 바깥(어두운 부분)을 눌러도 닫히게
+detailDialog.addEventListener("click", (e) => {
+  if (e.target === detailDialog) detailDialog.close();
+});
+
+// 6단계에서 구매 화면으로 연결할 자리
+document.getElementById("adopt-btn").addEventListener("click", () => {
+  document.getElementById("adopt-note").hidden = false;
+});

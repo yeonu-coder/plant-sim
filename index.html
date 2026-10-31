@@ -92,6 +92,16 @@
 
   </main>
 
+  <!-- 4. 상세보기 (결과 화면 위에 뜨는 팝업) -->
+  <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="detail-name">
+    <div class="detail-inner">
+      <button class="detail-close" id="detail-close" aria-label="닫기">✕</button>
+      <div id="detail-content"></div>
+      <button class="btn btn-main btn-block" id="adopt-btn">이 식물 데려오기</button>
+      <p class="small-note" id="adopt-note" hidden>구매 화면은 6단계에서 연결돼요.</p>
+    </div>
+  </dialog>
+
   <script src="./js/data/plants.js"></script>
   <script src="./js/data/questions.js"></script>
   <script src="./js/data/shops.js"></script>
