@@ -619,3 +619,257 @@ button {
   color: var(--muted);
   margin-top: 6px;
 }
+
+/* ===== 공통: 화면 제목, 버튼 줄 ===== */
+.screen-title {
+  font-size: 1.3rem;
+  color: var(--green-dark);
+  margin: 12px 0 16px;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.collection-link {
+  margin-top: 20px;
+}
+
+.demo-note {
+  margin-top: 10px;
+}
+
+/* ===== 구매 화면 ===== */
+.shop-plant {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.owned-note {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
+.shop-list {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.shop-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 14px;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  text-align: left;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.shop-btn:hover,
+.shop-btn[aria-checked="true"] {
+  border-color: var(--green);
+  background: var(--green-light);
+}
+
+.shop-emoji {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.shop-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.shop-text small {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.shop-price {
+  font-weight: 800;
+  color: var(--green-dark);
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  background: var(--line);
+  color: var(--muted);
+  cursor: default;
+}
+
+/* ===== 주문 완료 화면 ===== */
+.done-hero {
+  text-align: center;
+  margin: 12px 0 16px;
+}
+
+.done-emoji {
+  font-size: 3.5rem;
+  line-height: 1.2;
+  animation: sway 2.4s ease-in-out infinite;
+}
+
+.collect-message {
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
+.badge-celebrate {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: #fff6d6;
+  animation: pop-in 0.5s ease;
+}
+
+.badge-big {
+  font-size: 2.4rem;
+}
+
+@keyframes pop-in {
+  0%   { transform: scale(0.6); opacity: 0; }
+  70%  { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* ===== 도감 화면 ===== */
+.collection-summary {
+  margin-bottom: 16px;
+}
+
+.collection-count {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.collection-count strong {
+  font-size: 1.8rem;
+  color: var(--green-dark);
+}
+
+.badge-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: var(--bg);
+  opacity: 0.5;
+  filter: grayscale(1);
+}
+
+.badge.is-earned {
+  opacity: 1;
+  filter: none;
+  background: #fff6d6;
+}
+
+.badge-icon {
+  font-size: 1.6rem;
+}
+
+.badge-text {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+.badge-text small {
+  color: var(--muted);
+}
+
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.collection-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 4px;
+  min-width: 0;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.collection-cell.is-owned:hover {
+  border-color: var(--green);
+}
+
+.collection-image {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.collection-image.is-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+}
+
+.collection-cell.is-owned .collection-image {
+  background: var(--green-light);
+}
+
+/* 안 모은 식물: 실루엣처럼 까맣고 흐리게 */
+.collection-cell:not(.is-owned) .collection-image {
+  filter: brightness(0);
+  opacity: 0.15;
+}
+
+.collection-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  word-break: keep-all;
+  line-height: 1.3;
+}
+
+.collection-cell:not(.is-owned) .collection-name {
+  color: var(--muted);
+}
+
+.reset-btn {
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-size: 0.75rem;
+  text-decoration: underline;
+  min-height: 44px;
+  padding: 0 12px;
+}

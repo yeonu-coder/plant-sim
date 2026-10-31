@@ -4,19 +4,38 @@ const state = {
   answers: {},   // 질문 key별 답변 값 (예: { light: 2, pet: true })
   step: 0,       // 지금 몇 번째 질문인지 (0부터 시작)
   selectedPlant: null, // 상세보기에서 고른 식물
+  selectedShop: null,  // 구매 화면에서 고른 꽃집
+  returnTo: {},        // 화면별 "← 돌아가기"로 갈 화면 (예: { "screen-collection": "screen-start" })
 };
 
 const LEVEL_NAMES = { 1: "입문자", 2: "초보자", 3: "중급자", 4: "고수" };
 const STAGE_NAMES = ["", "씨앗", "떡잎", "본잎", "무럭무럭", "다 자랐어요!"];
 const STAGE_COUNT = 5;
 
+function currentScreen() {
+  return document.querySelector(".screen.is-active").id;
+}
+
 // 화면 하나만 보이게 바꾸기
 function showScreen(id) {
+  // 게임을 안 하고 결과 화면으로 가려 하면 시작 화면으로
+  if (id === "screen-result" && !state.level) id = "screen-start";
+
+  // 구매·도감 화면은 어디서 왔는지 기억해 뒀다가 "←"로 돌아가요
+  // (주문 완료 화면에서 왔으면, 구매를 시작했던 화면으로 돌아가요)
+  let from = currentScreen();
+  if (from === "screen-done") from = state.returnTo["screen-shop"];
+  if ((id === "screen-shop" || id === "screen-collection") && from && from !== id) {
+    state.returnTo[id] = from;
+  }
+
   document.querySelectorAll(".screen").forEach((screen) => {
     screen.classList.toggle("is-active", screen.id === id);
   });
   window.scrollTo(0, 0);
   if (id === "screen-result") renderResult();
+  if (id === "screen-collection") renderCollection();
+  if (id === "screen-done") document.getElementById("done-result-btn").hidden = !state.level;
 }
 
 // ===== 시작 화면 =====
@@ -291,7 +310,6 @@ function openDetail(p) {
   content.querySelector(".detail-image").appendChild(createPlantImage(p, "plant-thumb"));
 
   state.selectedPlant = p; // 6단계 구매 화면에서 사용
-  document.getElementById("adopt-note").hidden = true;
   const dialog = document.getElementById("detail-dialog");
   dialog.showModal();
   dialog.querySelector(".detail-inner").scrollTop = 0;
@@ -304,7 +322,151 @@ detailDialog.addEventListener("click", (e) => {
   if (e.target === detailDialog) detailDialog.close();
 });
 
-// 6단계에서 구매 화면으로 연결할 자리
 document.getElementById("adopt-btn").addEventListener("click", () => {
-  document.getElementById("adopt-note").hidden = false;
+  detailDialog.close();
+  openShop(state.selectedPlant);
+});
+
+// ===== 구매 화면 =====
+function formatPrice(won) {
+  return won.toLocaleString("ko-KR") + "원";
+}
+
+// 꽃집별 가격: 기본 가격 × 가게 비율, 100원 단위로 반올림
+function shopPrice(plant, shop) {
+  return Math.round((plant.price * shop.priceRate) / 100) * 100;
+}
+
+function openShop(plant) {
+  state.selectedShop = null;
+
+  const info = document.getElementById("shop-plant");
+  info.innerHTML = `
+    <div class="detail-image"></div>
+    <div>
+      <h3 class="plant-name">${plant.name}</h3>
+      <p class="plant-summary">${plant.summary}</p>
+      ${getCollection().includes(plant.id) ? '<p class="owned-note">📖 이미 도감에 있는 식물이에요</p>' : ""}
+    </div>
+  `;
+  info.querySelector(".detail-image").appendChild(createPlantImage(plant, "plant-thumb"));
+
+  const list = document.getElementById("shop-list");
+  list.innerHTML = "";
+  SHOPS.forEach((shop) => {
+    const btn = document.createElement("button");
+    btn.className = "shop-btn";
+    btn.setAttribute("role", "radio");
+    btn.setAttribute("aria-checked", "false");
+    btn.innerHTML = `
+      <span class="shop-emoji">${shop.emoji}</span>
+      <span class="shop-text">
+        <strong>${shop.name}</strong>
+        <small>${shop.distance} · ${shop.comment}</small>
+      </span>
+      <span class="shop-price">${formatPrice(shopPrice(plant, shop))}</span>
+    `;
+    btn.addEventListener("click", () => selectShop(shop, btn));
+    list.appendChild(btn);
+  });
+
+  const orderBtn = document.getElementById("order-btn");
+  orderBtn.disabled = true;
+  orderBtn.textContent = "꽃집을 골라 주세요";
+  showScreen("screen-shop");
+}
+
+function selectShop(shop, btn) {
+  state.selectedShop = shop;
+  document.querySelectorAll(".shop-btn").forEach((b) => b.setAttribute("aria-checked", String(b === btn)));
+  const orderBtn = document.getElementById("order-btn");
+  orderBtn.disabled = false;
+  orderBtn.textContent = `${formatPrice(shopPrice(state.selectedPlant, shop))} 주문하기`;
+}
+
+document.getElementById("order-btn").addEventListener("click", () => {
+  const plant = state.selectedPlant;
+  const shop = state.selectedShop;
+  if (!plant || !shop) return;
+  showOrderDone(plant, shop, addToCollection(plant.id));
+});
+
+document.getElementById("shop-back").addEventListener("click", () => {
+  showScreen(state.returnTo["screen-shop"] || "screen-start");
+});
+
+// ===== 주문 완료 화면 =====
+function showOrderDone(plant, shop, result) {
+  document.getElementById("order-summary").innerHTML = `
+    <div><dt>🪴 식물</dt><dd>${plant.name}</dd></div>
+    <div><dt>🏡 꽃집</dt><dd>${shop.name}</dd></div>
+    <div><dt>💰 가격</dt><dd>${formatPrice(shopPrice(plant, shop))}</dd></div>
+  `;
+
+  let message = result.added
+    ? `📖 도감에 새로 등록됐어요! (${result.count} / ${PLANTS.length})`
+    : "📖 이미 도감에 있어요. 도감에는 한 번만 등록돼요.";
+  if (!result.saved) message += " (이 브라우저에서는 저장이 안 돼서, 새로고침하면 사라질 수 있어요)";
+  document.getElementById("collect-message").textContent = message;
+
+  document.getElementById("badge-celebration").innerHTML = result.newBadges
+    .map((b) => `
+      <div class="badge-celebrate">
+        <span class="badge-big">${b.icon}</span>
+        <p><strong>축하해요! ${b.goal}종을 모았어요</strong><br>'${b.name}' 배지를 받았어요</p>
+      </div>`)
+    .join("");
+
+  showScreen("screen-done");
+}
+
+// ===== 도감 화면 =====
+function renderCollection() {
+  const collection = getCollection();
+  const badges = getBadges();
+
+  document.getElementById("collection-count").textContent = collection.length;
+  document.getElementById("collection-total").textContent = PLANTS.length;
+  document.getElementById("collection-fill").style.width = (collection.length / PLANTS.length) * 100 + "%";
+
+  // 배지: 받은 것은 진하게, 아직이면 흐리게 + 목표 안내
+  document.getElementById("badge-list").innerHTML = BADGES.map((b) => {
+    const earned = badges.includes(b.goal);
+    return `
+      <div class="badge ${earned ? "is-earned" : ""}">
+        <span class="badge-icon">${b.icon}</span>
+        <span class="badge-text"><strong>${b.name}</strong><small>${earned ? "획득!" : `${b.goal}종 모으면`}</small></span>
+      </div>`;
+  }).join("");
+
+  // 20종 칸: 모은 식물은 그림+이름(누르면 상세보기), 안 모은 식물은 실루엣+"?"
+  const grid = document.getElementById("collection-grid");
+  grid.innerHTML = "";
+  PLANTS.forEach((plant) => {
+    const owned = collection.includes(plant.id);
+    const cell = document.createElement(owned ? "button" : "div");
+    cell.className = "collection-cell" + (owned ? " is-owned" : "");
+    cell.appendChild(createPlantImage(plant, "collection-image"));
+    const name = document.createElement("span");
+    name.className = "collection-name";
+    name.textContent = owned ? plant.name : "?";
+    cell.appendChild(name);
+    if (owned) {
+      cell.addEventListener("click", () => openDetail(plant));
+    } else {
+      cell.setAttribute("aria-label", "아직 모으지 않은 식물");
+    }
+    grid.appendChild(cell);
+  });
+}
+
+document.getElementById("collection-back").addEventListener("click", () => {
+  showScreen(state.returnTo["screen-collection"] || "screen-start");
+});
+
+document.getElementById("reset-btn").addEventListener("click", () => {
+  if (confirm("도감과 배지를 모두 지울까요? (시연용)")) {
+    resetCollection();
+    renderCollection();
+  }
 });
