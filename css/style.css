@@ -613,3 +613,9 @@ button {
   color: var(--muted);
   margin-bottom: 16px;
 }
+
+.water-original {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 6px;
+}

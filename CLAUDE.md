@@ -93,7 +93,8 @@ plant-sim/
 - **`source`는 처음에 모두 `"AI 초안"`.** 사용자가 직접 확인한 식물은 사용자가 출처를 바꾼다. Claude는 사용자가 바꾼 `source` 값과 그 식물의 데이터를 임의로 수정하지 않는다.
 - 화면에는 `source`가 "AI 초안"인 식물에 작은 표시(예: "AI 초안 정보")를 붙인다.
 - `source: "농사로 공공데이터"`인 식물의 조건값(빛·물 주기·온도·습도·난이도·크기·matureSize)은 `scripts/convert_nongsaro.py`가 만든다. **손으로 고치지 말고** 규칙을 바꾼 뒤 스크립트를 다시 돌린다. 규칙을 바꾸면 `docs/data-rules.md`도 같이 고친다.
-- CSV 값이 빈 항목은 AI 초안 값을 유지하고 `sourceNote`에 적는다. 다른 이름·품종의 CSV 값을 쓴 경우도 `sourceNote`에 적는다.
+- CSV 값이 빈 항목은 AI 초안 값을 유지하고 `sourceNote`에 적는다. 다른 이름·품종의 CSV 값을 쓴 경우도 `sourceNote`에 적는다. AI 초안으로 남은 항목은 `draftFields` 배열에도 적는다(상세보기 출처 표시용).
+- 상세보기 출처는 항목별로 나눈다: 농사로 식물도 수명·반려동물·꽃말은 AI 초안.
 - 모든 식물에 `waterTextSpringSummer`, `waterTextWinter`(농사로 물주기 원문, 없으면 `null`)가 있다. 5단계 상세보기에서 사용.
 - `data/plants_nongsaro.csv` 원본은 절대 수정하지 않는다.
 

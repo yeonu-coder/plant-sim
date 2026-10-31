@@ -170,7 +170,15 @@ const LIGHT_DETAIL = { 1: "그늘에서도 괜찮아요", 2: "밝은 간접광�
 const HUMIDITY_DETAIL = { 1: "건조해도 괜찮아요", 2: "보통 습도", 3: "촉촉한 공기를 좋아해요" };
 const DIFFICULTY_STARS = { 1: "★☆☆ 쉬움", 2: "★★☆ 보통", 3: "★★★ 어려움" };
 const PET_DETAIL = { true: "함께 지내도 안전해요", false: "주의가 필요해요 (먹으면 해로울 수 있어요)", null: "아직 확인 중이에요" };
-const NONGSARO_SOURCE = "출처: 농촌진흥청 농사로 「실내정원용 식물」";
+const NONGSARO_SOURCE = "농촌진흥청 농사로 「실내정원용 식물」";
+
+// 농사로 원문을 초보자도 알기 쉬운 말로
+const WATER_PLAIN = {
+  wet: "흙이 늘 젖어 있게 해 주세요",
+  moist: "흙이 마르지 않게 촉촉하게 유지해 주세요",
+  surface: "흙 겉면이 마르면 흠뻑 주세요",
+  dry: "화분 속 흙까지 거의 마르면 흠뻑 주세요",
+};
 
 // 흙 상태별 물 주기 확인 방법
 const WATER_HOW = {
@@ -211,26 +219,44 @@ function waterHTML(p) {
   // "촉촉" 확인 방법에는 이미 기간이 들어 있어서 기간 줄을 따로 쓰지 않아요.
   const period = kind === "moist" ? "" : `<p class="water-period">(${waterPeriod(p.waterDays)})</p>`;
 
+  // 원문이 있으면 쉬운 말을 크게, 원문은 아래에 작게. 없으면(AI 초안) 대략 기간만.
   let html = text
-    ? `<p class="water-main">${text}</p>${period}`
+    ? `<p class="water-main">${WATER_PLAIN[kind]}</p>${period}`
     : `<p class="water-main">${waterPeriod(p.waterDays)}</p>`;
   html += `<p class="water-how">👉 ${WATER_HOW[kind]}</p>`;
+  if (text) html += `<p class="water-original">농사로 원문: ${text}</p>`;
 
   if (p.waterTextWinter) {
+    const winterKind = waterKind(p.waterTextWinter);
     html += `
       <div class="water-winter">
         <p class="water-season">❄️ 겨울에는</p>
-        <p class="water-main">${p.waterTextWinter}</p>
-        <p class="water-how">👉 ${WATER_HOW[waterKind(p.waterTextWinter)]}</p>
+        <p class="water-main">${WATER_PLAIN[winterKind]}</p>
+        <p class="water-how">👉 ${WATER_HOW[winterKind]}</p>
+        <p class="water-original">농사로 원문: ${p.waterTextWinter}</p>
       </div>`;
   }
   return html;
 }
 
+// 농사로 CSV에서 가져오는 항목 (scripts/convert_nongsaro.py와 같은 이름)
+const NONGSARO_FIELDS = ["물 주기", "빛", "온도", "습도", "난이도", "크기"];
+
+// 출처를 항목별로 나눠서 보여줘요. 농사로 식물도 수명·반려동물·꽃말은 AI 초안이에요.
 function sourceHTML(p) {
   if (p.source === "AI 초안") return '<span class="draft-badge">AI 초안 정보</span>';
-  const note = p.sourceNote ? `<br>(${p.sourceNote})` : "";
-  return `${p.source === "농사로 공공데이터" ? NONGSARO_SOURCE : "출처: " + p.source}${note}`;
+  if (p.source !== "농사로 공공데이터") return `출처: ${p.source}`;
+
+  const draft = p.draftFields || []; // CSV 값이 없어 AI 초안으로 남은 항목
+  const fromCsv = NONGSARO_FIELDS.filter((f) => !draft.includes(f));
+  const fromDraft = [...draft, "수명", "반려동물", ...(p.flowerLanguage ? ["꽃말"] : [])];
+
+  let html = `${fromCsv.join("·")}: ${NONGSARO_SOURCE}`;
+  // "CSV에 값이 없어 …" 메모는 아래 AI 초안 줄과 겹쳐서 빼고 보여줘요.
+  const notes = (p.sourceNote || "").split(" / ").filter((n) => n && !n.startsWith("CSV에 값이 없어"));
+  if (notes.length) html += ` (${notes.join(", ")})`;
+  html += `<br>${fromDraft.join("·")}: AI 초안`;
+  return html;
 }
 
 function openDetail(p) {
@@ -250,7 +276,7 @@ function openDetail(p) {
     </section>
 
     <dl class="detail-facts">
-      <div><dt>📏 다 자란 크기</dt><dd>${p.matureSize || "확인 중"}</dd></div>
+      <div><dt>📏 다 자란 크기</dt><dd>${(p.matureSize || "확인 중").split(" · ").join("<br>")}</dd></div>
       <div><dt>☀️ 빛</dt><dd>${LIGHT_DETAIL[p.light]}</dd></div>
       <div><dt>🌡️ 적정 온도</dt><dd>${p.tempMin}~${p.tempMax}℃</dd></div>
       <div><dt>💦 습도</dt><dd>${HUMIDITY_DETAIL[p.humidity]}</dd></div>

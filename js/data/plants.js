@@ -15,6 +15,7 @@
 // 출처 관련 칸
 //   source                 "AI 초안" 또는 "농사로 공공데이터"
 //   sourceNote             농사로 값을 쓸 때 참고할 점 (없으면 이 칸이 없음)
+//   draftFields            농사로 식물 중 CSV 값이 없어 AI 초안으로 남은 항목 (없으면 이 칸이 없음)
 //   waterTextSpringSummer  농사로 물주기 원문 (봄·여름 기준), 없으면 null
 //   waterTextWinter        농사로 물주기 원문 (겨울 기준), 없으면 null
 //
@@ -100,7 +101,8 @@ window.PLANTS = [
     waterTextSpringSummer: "토양 표면이 말랐을때 충분히 관수함",
     waterTextWinter: "화분 흙 대부분 말랐을때 충분히 관수함",
     source: "농사로 공공데이터",
-    sourceNote: "CSV에 값이 없어 AI 초안 유지: 난이도"
+    sourceNote: "CSV에 값이 없어 AI 초안 유지: 난이도",
+    draftFields: ["난이도"]
   },
   {
     id: "spathiphyllum",

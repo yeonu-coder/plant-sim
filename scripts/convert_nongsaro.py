@@ -96,6 +96,12 @@ HEIGHT_COLUMN = "성장높이정보"
 WIDTH_COLUMN = "성장넓이정보"
 SIZE_LIMITS = [(40, 1), (100, 2)]
 
+# 상세보기 출처 표시에 쓰는 항목 이름 (CSV 값이 없어 AI 초안으로 남은 항목 → draftFields)
+DRAFT_FIELD_NAMES = {
+    "light": "빛", "waterDays": "물 주기", "tempMin": "온도",
+    "humidity": "습도", "difficulty": "난이도", "size": "크기",
+}
+
 FIELD_NAMES = {
     "light": "빛", "waterDays": "물 주기", "tempMin": "최저 온도", "tempMax": "최고 온도",
     "humidity": "습도", "difficulty": "난이도", "size": "크기", "matureSize": "다 자란 크기",
@@ -292,7 +298,7 @@ def set_water_texts(block, spring_summer, winter):
     return block.replace("    source:", lines + "    source:", 1)
 
 
-def update_block(block, values, notes):
+def update_block(block, values, notes, draft_fields):
     for key in ("light", "waterDays", "tempMin", "tempMax", "humidity", "difficulty", "size"):
         if key in values:
             block = re.sub(rf"\b{key}: -?\d+\b", f"{key}: {values[key]}", block)
@@ -301,11 +307,14 @@ def update_block(block, values, notes):
 
     block = set_water_texts(block, values.get("waterTextSpringSummer"), values.get("waterTextWinter"))
 
-    # sourceNote는 지우고 다시 써요 (몇 번 돌려도 결과가 같게)
+    # sourceNote, draftFields는 지우고 다시 써요 (몇 번 돌려도 결과가 같게)
     block = re.sub(r',\n    sourceNote: "[^"]*"', "", block)
+    block = re.sub(r',\n    draftFields: \[[^\]]*\]', "", block)
     source = f'source: "{SOURCE_CSV}"'
     if notes:
         source += f',\n    sourceNote: "{" / ".join(notes)}"'
+    if draft_fields:
+        source += f',\n    draftFields: [{", ".join(js_value(f) for f in draft_fields)}]'
     return re.sub(r'source: "[^"]*"', source, block)
 
 
@@ -327,15 +336,14 @@ def convert(text, plants, conversions):
                 return match.group(0)
             return set_water_texts(match.group(0), None, None)
         values, _, _ = conversions[plant_id]
-        missing = [FIELD_NAMES[k] for k in ("light", "waterDays", "tempMin", "humidity", "difficulty", "size")
-                   if k not in values]
+        missing = [name for k, name in DRAFT_FIELD_NAMES.items() if k not in values]
         notes = ([CSV_NOTES[plant_id]] if plant_id in CSV_NOTES else []) + (
             [f"CSV에 값이 없어 AI 초안 유지: {', '.join(missing)}"] if missing else [])
         changes = [f"{FIELD_NAMES[k]} {plant[k]}→{v}" for k, v in values.items()
                    if k in FIELD_NAMES and k != "matureSize" and plant[k] != v]
         if changes:
             print(f"- {plant['name']}: {', '.join(changes)}")
-        return update_block(match.group(0), values, notes)
+        return update_block(match.group(0), values, notes, missing)
 
     new_text = re.sub(r"  \{\n    id: \"([^\"]+)\".*?\n  \}", replace, text, flags=re.S)
     if new_text == text:
