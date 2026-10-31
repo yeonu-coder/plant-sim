@@ -9,6 +9,10 @@ const AWAY_DAYS = { 1: 3, 2: 5, 3: 10 }; // 집 비우기: 거의 없음 / 가�
 const COMFORT_DIFFICULTY = { 1: 1, 2: 1, 3: 2, 4: 3 };
 const OVER_PENALTY = { 1: 20, 2: 10, 3: 8, 4: 0 };
 
+// 적정 온도 범위에서 이만큼(℃)까지 벗어나도 감점하지 않아요.
+// (농사로 온도는 "잘 자라는" 좁은 범위라서 조금 벗어나도 키울 수 있어요)
+const TEMP_TOLERANCE = 3;
+
 function neededWaterDays(answers) {
   return Math.max(CARE_DAYS[answers.waterCare], AWAY_DAYS[answers.away]);
 }
@@ -25,9 +29,10 @@ function scorePlant(plant, answers, level) {
   const days = neededWaterDays(answers);
   score += plant.waterDays >= days ? 20 : Math.max(0, 20 - (days - plant.waterDays) * 2);
 
-  // 온도 (15점): 적정 온도 범위에서 1℃ 벗어날 때마다 감점
+  // 온도 (15점): 적정 온도 범위 ± 여유 폭을 넘어 1℃ 벗어날 때마다 감점
   const t = answers.temp;
-  const tempGap = t < plant.tempMin ? plant.tempMin - t : t > plant.tempMax ? t - plant.tempMax : 0;
+  const outside = t < plant.tempMin ? plant.tempMin - t : t > plant.tempMax ? t - plant.tempMax : 0;
+  const tempGap = Math.max(0, outside - TEMP_TOLERANCE);
   score += Math.max(0, 15 - tempGap * 3);
 
   // 습도 (15점): 식물이 더 촉촉한 걸 원하면 크게 감점

@@ -11,6 +11,14 @@
 //   difficulty 관리 난이도  1 쉬움 / 2 보통 / 3 어려움
 //   petSafe    반려동물 안전 true 안전 / false 위험 / null 확인 필요
 //   size       공간 크기    1 작음(책상) / 2 중간(선반·창가) / 3 큼(바닥)
+//
+// 출처 관련 칸
+//   source                 "AI 초안" 또는 "농사로 공공데이터"
+//   sourceNote             농사로 값을 쓸 때 참고할 점 (없으면 이 칸이 없음)
+//   waterTextSpringSummer  농사로 물주기 원문 (봄·여름 기준), 없으면 null
+//   waterTextWinter        농사로 물주기 원문 (겨울 기준), 없으면 null
+//
+// 농사로 공공데이터 값은 scripts/convert_nongsaro.py가 만들어요. 손으로 고치지 마세요.
 
 window.PLANTS = [
   {
@@ -21,10 +29,12 @@ window.PLANTS = [
     summary: "구멍 뚫린 큰 잎이 매력적인 인기 관엽식물",
     lifespan: "다년생 · 관리하면 10년 이상",
     matureSize: "높이 약 150cm · 폭 약 100cm",
-    light: 2, waterDays: 4, tempMin: 16, tempMax: 20, humidity: 3,
+    light: 2, waterDays: 3, tempMin: 16, tempMax: 20, humidity: 3,
     difficulty: 1, petSafe: false, size: 3,
     price: 35000,
     flowerLanguage: "웅장한 계획",
+    waterTextSpringSummer: "흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)",
+    waterTextWinter: "토양 표면이 말랐을때 충분히 관수함",
     source: "농사로 공공데이터"
   },
   {
@@ -39,6 +49,8 @@ window.PLANTS = [
     difficulty: 1, petSafe: false, size: 2,
     price: 20000,
     flowerLanguage: "관용",
+    waterTextSpringSummer: "토양 표면이 말랐을때 충분히 관수함",
+    waterTextWinter: "화분 흙 대부분 말랐을때 충분히 관수함",
     source: "농사로 공공데이터"
   },
   {
@@ -53,6 +65,8 @@ window.PLANTS = [
     difficulty: 2, petSafe: true, size: 2,
     price: 8000,
     flowerLanguage: null,
+    waterTextSpringSummer: null,
+    waterTextWinter: null,
     source: "AI 초안"
   },
   {
@@ -67,6 +81,8 @@ window.PLANTS = [
     difficulty: 1, petSafe: false, size: 2,
     price: 25000,
     flowerLanguage: null,
+    waterTextSpringSummer: "토양 표면이 말랐을때 충분히 관수함",
+    waterTextWinter: "화분 흙 대부분 말랐을때 충분히 관수함",
     source: "농사로 공공데이터"
   },
   {
@@ -81,6 +97,8 @@ window.PLANTS = [
     difficulty: 1, petSafe: false, size: 1,
     price: 12000,
     flowerLanguage: null,
+    waterTextSpringSummer: "토양 표면이 말랐을때 충분히 관수함",
+    waterTextWinter: "화분 흙 대부분 말랐을때 충분히 관수함",
     source: "농사로 공공데이터",
     sourceNote: "CSV에 값이 없어 AI 초안 유지: 난이도"
   },
@@ -96,6 +114,8 @@ window.PLANTS = [
     difficulty: 2, petSafe: false, size: 1,
     price: 18000,
     flowerLanguage: "세심한 사랑",
+    waterTextSpringSummer: "토양 표면이 말랐을때 충분히 관수함",
+    waterTextWinter: "화분 흙 대부분 말랐을때 충분히 관수함",
     source: "농사로 공공데이터"
   },
   {
@@ -105,12 +125,15 @@ window.PLANTS = [
     image: null,
     summary: "두껍고 반질반질한 잎을 가진 튼튼한 나무",
     lifespan: "다년생 · 관리하면 10년 이상",
-    matureSize: "실내 1~2m",
-    light: 2, waterDays: 10, tempMin: 16, tempMax: 27, humidity: 2,
+    matureSize: "높이 약 200cm · 폭 약 100cm",
+    light: 2, waterDays: 7, tempMin: 21, tempMax: 25, humidity: 2,
     difficulty: 1, petSafe: false, size: 3,
     price: 30000,
     flowerLanguage: null,
-    source: "AI 초안"
+    waterTextSpringSummer: "토양 표면이 말랐을때 충분히 관수함",
+    waterTextWinter: "화분 흙 대부분 말랐을때 충분히 관수함",
+    source: "농사로 공공데이터",
+    sourceNote: "데코라고무나무 값 사용"
   },
   {
     id: "hoya",
@@ -124,6 +147,8 @@ window.PLANTS = [
     difficulty: 2, petSafe: true, size: 1,
     price: 15000,
     flowerLanguage: null,
+    waterTextSpringSummer: "토양 표면이 말랐을때 충분히 관수함",
+    waterTextWinter: "화분 흙 대부분 말랐을때 충분히 관수함",
     source: "농사로 공공데이터"
   },
   {
@@ -133,12 +158,15 @@ window.PLANTS = [
     image: null,
     summary: "무늬가 화려한 잎, 밤에는 잎을 오므리는 식물",
     lifespan: "다년생",
-    matureSize: "30~60cm",
-    light: 2, waterDays: 5, tempMin: 18, tempMax: 27, humidity: 3,
-    difficulty: 3, petSafe: true, size: 2,
+    matureSize: "높이 약 50cm · 폭 약 30cm",
+    light: 2, waterDays: 7, tempMin: 21, tempMax: 25, humidity: 2,
+    difficulty: 2, petSafe: true, size: 2,
     price: 22000,
     flowerLanguage: null,
-    source: "AI 초안"
+    waterTextSpringSummer: "토양 표면이 말랐을때 충분히 관수함",
+    waterTextWinter: "화분 흙 대부분 말랐을때 충분히 관수함",
+    source: "농사로 공공데이터",
+    sourceNote: "CSV 품종: 칼라데아 마코야나 (Calathea makoya)"
   },
   {
     id: "spider-plant",
@@ -152,6 +180,8 @@ window.PLANTS = [
     difficulty: 1, petSafe: true, size: 1,
     price: 10000,
     flowerLanguage: null,
+    waterTextSpringSummer: "토양 표면이 말랐을때 충분히 관수함",
+    waterTextWinter: "화분 흙 대부분 말랐을때 충분히 관수함",
     source: "농사로 공공데이터"
   },
   {
@@ -166,6 +196,8 @@ window.PLANTS = [
     difficulty: 1, petSafe: false, size: 1,
     price: 12000,
     flowerLanguage: null,
+    waterTextSpringSummer: null,
+    waterTextWinter: null,
     source: "AI 초안"
   },
   {
@@ -180,6 +212,8 @@ window.PLANTS = [
     difficulty: 2, petSafe: true, size: 1,
     price: 6000,
     flowerLanguage: null,
+    waterTextSpringSummer: null,
+    waterTextWinter: null,
     source: "AI 초안"
   },
   {
@@ -194,6 +228,8 @@ window.PLANTS = [
     difficulty: 1, petSafe: true, size: 1,
     price: 7000,
     flowerLanguage: null,
+    waterTextSpringSummer: null,
+    waterTextWinter: null,
     source: "AI 초안"
   },
   {
@@ -203,12 +239,15 @@ window.PLANTS = [
     image: null,
     summary: "풍성하게 늘어지는 깃털 같은 잎, 촉촉한 걸 좋아함",
     lifespan: "다년생",
-    matureSize: "40~90cm",
-    light: 2, waterDays: 4, tempMin: 16, tempMax: 24, humidity: 3,
-    difficulty: 2, petSafe: true, size: 2,
+    matureSize: "높이 약 40cm · 폭 약 40cm",
+    light: 2, waterDays: 3, tempMin: 16, tempMax: 20, humidity: 3,
+    difficulty: 1, petSafe: true, size: 1,
     price: 18000,
     flowerLanguage: null,
-    source: "AI 초안"
+    waterTextSpringSummer: "흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)",
+    waterTextWinter: "토양 표면이 말랐을때 충분히 관수함",
+    source: "농사로 공공데이터",
+    sourceNote: "CSV 이름: 보스톤고사리"
   },
   {
     id: "pachira",
@@ -222,6 +261,8 @@ window.PLANTS = [
     difficulty: 2, petSafe: true, size: 3,
     price: 30000,
     flowerLanguage: null,
+    waterTextSpringSummer: "토양 표면이 말랐을때 충분히 관수함",
+    waterTextWinter: "화분 흙 대부분 말랐을때 충분히 관수함",
     source: "농사로 공공데이터"
   },
   {
@@ -232,10 +273,12 @@ window.PLANTS = [
     summary: "굵은 줄기 위로 길쭉한 잎이 나는 이름부터 좋은 식물",
     lifespan: "다년생 · 관리하면 10년 이상",
     matureSize: "높이 약 200cm · 폭 약 50cm",
-    light: 2, waterDays: 4, tempMin: 21, tempMax: 25, humidity: 2,
+    light: 2, waterDays: 3, tempMin: 21, tempMax: 25, humidity: 2,
     difficulty: 1, petSafe: false, size: 3,
     price: 20000,
     flowerLanguage: null,
+    waterTextSpringSummer: "흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)",
+    waterTextWinter: "토양 표면이 말랐을때 충분히 관수함",
     source: "농사로 공공데이터"
   },
   {
@@ -246,10 +289,12 @@ window.PLANTS = [
     summary: "작은 야자 모양, 조금 어두운 실내에서도 잘 자라는 식물",
     lifespan: "다년생",
     matureSize: "높이 약 200cm · 폭 약 50cm",
-    light: 2, waterDays: 4, tempMin: 21, tempMax: 25, humidity: 2,
+    light: 2, waterDays: 3, tempMin: 21, tempMax: 25, humidity: 2,
     difficulty: 1, petSafe: true, size: 3,
     price: 15000,
     flowerLanguage: null,
+    waterTextSpringSummer: "흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)",
+    waterTextWinter: "화분 흙 대부분 말랐을때 충분히 관수함",
     source: "농사로 공공데이터"
   },
   {
@@ -264,6 +309,8 @@ window.PLANTS = [
     difficulty: 2, petSafe: true, size: 3,
     price: 40000,
     flowerLanguage: null,
+    waterTextSpringSummer: "토양 표면이 말랐을때 충분히 관수함",
+    waterTextWinter: "토양 표면이 말랐을때 충분히 관수함",
     source: "농사로 공공데이터"
   },
   {
@@ -278,6 +325,8 @@ window.PLANTS = [
     difficulty: 1, petSafe: false, size: 3,
     price: 45000,
     flowerLanguage: null,
+    waterTextSpringSummer: "토양 표면이 말랐을때 충분히 관수함",
+    waterTextWinter: "화분 흙 대부분 말랐을때 충분히 관수함",
     source: "농사로 공공데이터"
   },
   {
@@ -292,6 +341,8 @@ window.PLANTS = [
     difficulty: 3, petSafe: null, size: 3,
     price: 40000,
     flowerLanguage: null,
+    waterTextSpringSummer: null,
+    waterTextWinter: null,
     source: "AI 초안"
   }
 ];

@@ -6,7 +6,7 @@
 
 - CSV 원본(data/plants_nongsaro.csv)은 읽기만 하고 절대 고치지 않아요.
 - 같은 CSV로 몇 번을 다시 돌려도 plants.js는 같은 결과가 돼요.
-- 바꾸는 값: 빛, 물 주기, 온도, 습도, 난이도, 크기(+ 다 자란 크기 문구), 출처
+- 바꾸는 값: 빛, 물 주기, 온도, 습도, 난이도, 크기(+ 다 자란 크기 문구), 물주기 원문, 출처
 - 그대로 두는 값: 꽃말, 수명, 반려동물 안전 여부, 이름, 소개, 가격
 - 사용자가 직접 확인해서 출처를 바꾼 식물은 건드리지 않아요.
 - 변환 규칙은 docs/data-rules.md에 표로 정리돼 있어요.
@@ -32,7 +32,7 @@ CSV_NAMES = {
     "zz-plant": "금전수 (자미오쿨카스, 돈나무)",
     "pothos": "스킨다비스 (신답서스, 스킨답서스)",
     "spathiphyllum": "스파티필름 (스파티필럼, 스파티)",
-    "rubber-plant": "인도고무나무",
+    "rubber-plant": "데코라고무나무",
     "hoya": "호야",
     "spider-plant": "접란",
     "dracaena-fragrans": "행운목",
@@ -41,15 +41,22 @@ CSV_NAMES = {
     "fiddle-leaf-fig": "떡갈잎고무나무 (떡갈나무, 떡깔나무)",
     "rosemary": "로즈마리",
     "pachira": "파키라",
+    "boston-fern": "보스톤고사리",
+    "calathea": "칼라데아 마코야나",
+}
+
+# 이름이 정확히 같지 않은 식물: 어떤 CSV 값을 썼는지 sourceNote에 적어둬요.
+CSV_NOTES = {
+    "rubber-plant": "데코라고무나무 값 사용",
+    "boston-fern": "CSV 이름: 보스톤고사리",
+    "calathea": "CSV 품종: 칼라데아 마코야나 (Calathea makoya)",
 }
 
 # 변환 대상이 아닌 식물: CSV에 이름이 비슷한 행이 있는지 참고로만 찾아봐요.
 SIMILAR_WORDS = {
-    "calathea": ["칼라데아", "칼라테아", "Calathea"],
     "aloe": ["알로에", "Aloe"],
     "echeveria": ["에케베리아", "Echeveria"],
     "haworthia": ["하월시아", "Haworthia"],
-    "boston-fern": ["보스톤고사리", "보스턴고사리", "Nephrolepis exaltata"],
     "olive": ["올리브", "Olea"],
 }
 
@@ -62,11 +69,15 @@ LIGHT_RULES = {"낮은 광도": 1, "중간 광도": 2, "높은 광도": 3}
 # 물 주기: 봄·여름·가을 물주기 중 가장 많이 나온 문장 → waterDays (같으면 봄 기준)
 WATER_COLUMNS = ["물공급봄코드명", "물공급여름코드명", "물공급가을코드명"]
 WATER_RULES = {
-    "항상 흙을 축축하게 유지함(물에 잠김)": 2,
-    "흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)": 4,
+    "항상 흙을 축축하게 유지함(물에 잠김)": 1,
+    "흙을 촉촉하게 유지함(물에 잠기지 않도록 주의)": 3,
     "토양 표면이 말랐을때 충분히 관수함": 7,
     "화분 흙 대부분 말랐을때 충분히 관수함": 14,
 }
+
+# 상세보기용 물주기 원문: 봄·여름 기준, 겨울 기준
+SPRING_SUMMER_COLUMNS = ["물공급봄코드명", "물공급여름코드명"]
+WINTER_COLUMN = "물공급겨울코드명"
 
 # 온도: 생육 온도 → tempMin, tempMax
 TEMP_COLUMN = "성장온도코드명"
@@ -147,6 +158,14 @@ def convert_row(row):
     else:
         problems.append("물공급(봄·여름·가을): 빈 값")
 
+    # 물주기 원문 (봄과 여름이 다르면 둘 다 적어요)
+    spring, summer = (row[c].strip() for c in SPRING_SUMMER_COLUMNS)
+    if spring and summer and spring != summer:
+        values["waterTextSpringSummer"] = f"봄: {spring} / 여름: {summer}"
+    else:
+        values["waterTextSpringSummer"] = spring or summer or None
+    values["waterTextWinter"] = row[WINTER_COLUMN].strip() or None
+
     # 온도, 습도, 난이도
     simple = [
         (TEMP_COLUMN, TEMP_RULES, ("tempMin", "tempMax")),
@@ -193,6 +212,12 @@ def check(rows, plants):
 
     names = Counter(r["식물_한글유통명"].strip() for r in rows)
     print(f"- 이름이 겹치는 식물: {[n for n, c in names.items() if c > 1] or '없음'}")
+
+    errors = Counter((column, v.strip()) for r in rows for column, v in r.items()
+                     if re.fullmatch(r"#\w+[?!]", (v or "").strip()))
+    if errors:
+        shown = ", ".join(f"{column} 열 {value!r} {n}칸" for (column, value), n in errors.items())
+        print(f"- 엑셀 오류값으로 보이는 칸: {shown} (변환에 쓰지 않는 열)")
 
     swapped = sum(1 for r in rows if r["과_명"].strip().isdigit())
     if swapped:
@@ -255,18 +280,32 @@ def check(rows, plants):
 
 # ---- plants.js 고치기 ----
 
-def update_block(block, values, missing):
+def js_value(value):
+    return "null" if value is None else f'"{value}"'
+
+
+def set_water_texts(block, spring_summer, winter):
+    """물주기 원문 두 줄을 source 바로 위에 (다시) 써요."""
+    block = re.sub(r"\n    waterText\w+: (null|\"[^\"]*\"),", "", block)
+    lines = (f"    waterTextSpringSummer: {js_value(spring_summer)},\n"
+             f"    waterTextWinter: {js_value(winter)},\n")
+    return block.replace("    source:", lines + "    source:", 1)
+
+
+def update_block(block, values, notes):
     for key in ("light", "waterDays", "tempMin", "tempMax", "humidity", "difficulty", "size"):
         if key in values:
             block = re.sub(rf"\b{key}: -?\d+\b", f"{key}: {values[key]}", block)
     if "matureSize" in values:
         block = re.sub(r'matureSize: "[^"]*"', f'matureSize: "{values["matureSize"]}"', block)
 
+    block = set_water_texts(block, values.get("waterTextSpringSummer"), values.get("waterTextWinter"))
+
     # sourceNote는 지우고 다시 써요 (몇 번 돌려도 결과가 같게)
     block = re.sub(r',\n    sourceNote: "[^"]*"', "", block)
     source = f'source: "{SOURCE_CSV}"'
-    if missing:
-        source += f',\n    sourceNote: "CSV에 값이 없어 AI 초안 유지: {", ".join(missing)}"'
+    if notes:
+        source += f',\n    sourceNote: "{" / ".join(notes)}"'
     return re.sub(r'source: "[^"]*"', source, block)
 
 
@@ -279,19 +318,24 @@ def convert(text, plants, conversions):
     def replace(match):
         plant_id = match.group(1)
         plant = plants[plant_id]
-        if plant_id not in conversions:
-            return match.group(0)
         if plant["source"] not in (SOURCE_DRAFT, SOURCE_CSV):
             print(f"- {plant['name']}: 출처가 '{plant['source']}'(직접 확인함)이라 건드리지 않음")
             return match.group(0)
+        if plant_id not in conversions:
+            # CSV 값이 없는 식물도 같은 모양이 되도록 원문 칸만 null로 (이미 있으면 그대로)
+            if "waterTextWinter" in match.group(0):
+                return match.group(0)
+            return set_water_texts(match.group(0), None, None)
         values, _, _ = conversions[plant_id]
         missing = [FIELD_NAMES[k] for k in ("light", "waterDays", "tempMin", "humidity", "difficulty", "size")
                    if k not in values]
+        notes = ([CSV_NOTES[plant_id]] if plant_id in CSV_NOTES else []) + (
+            [f"CSV에 값이 없어 AI 초안 유지: {', '.join(missing)}"] if missing else [])
         changes = [f"{FIELD_NAMES[k]} {plant[k]}→{v}" for k, v in values.items()
-                   if k != "matureSize" and plant[k] != v]
+                   if k in FIELD_NAMES and k != "matureSize" and plant[k] != v]
         if changes:
             print(f"- {plant['name']}: {', '.join(changes)}")
-        return update_block(match.group(0), values, missing)
+        return update_block(match.group(0), values, notes)
 
     new_text = re.sub(r"  \{\n    id: \"([^\"]+)\".*?\n  \}", replace, text, flags=re.S)
     if new_text == text:
