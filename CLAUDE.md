@@ -45,9 +45,15 @@ plant-sim/
 │   ├── recommend.js      # 답변 ↔ 식물 조건 비교해서 점수 계산, 상위 3개 반환
 │   ├── plant-image.js    # 식물 그림 그리기 (이미지 있으면 이미지, 없으면 이모지)
 │   └── app.js            # 화면 전환 + 각 화면 동작
-└── assets/
-    ├── sprout/           # 새싹 성장 단계 SVG (stage1.svg ~ stage5.svg)
-    └── plants/           # 나중에 실제 식물 이미지 넣을 곳 (처음엔 비어있음)
+├── assets/
+│   ├── sprout/           # 새싹 성장 단계 SVG (stage1.svg ~ stage5.svg)
+│   └── plants/           # 나중에 실제 식물 이미지 넣을 곳 (처음엔 비어있음)
+├── data/
+│   └── plants_nongsaro.csv   # 농사로 공공데이터 원본 (cp949, 절대 수정 금지)
+├── scripts/
+│   └── convert_nongsaro.py   # CSV 점검 + plants.js 조건값 변환 (python3)
+└── docs/
+    └── data-rules.md         # CSV → 조건값 변환 규칙, 추천 점수 공식
 ```
 
 `index.html`에서 스크립트 불러오는 순서: `data/*.js` → `storage.js` → `recommend.js` → `plant-image.js` → `app.js`
@@ -86,6 +92,9 @@ plant-sim/
 - 특히 **꽃말**은 널리 알려진 경우가 아니면 `null`.
 - **`source`는 처음에 모두 `"AI 초안"`.** 사용자가 직접 확인한 식물은 사용자가 출처를 바꾼다. Claude는 사용자가 바꾼 `source` 값과 그 식물의 데이터를 임의로 수정하지 않는다.
 - 화면에는 `source`가 "AI 초안"인 식물에 작은 표시(예: "AI 초안 정보")를 붙인다.
+- `source: "농사로 공공데이터"`인 식물의 조건값(빛·물 주기·온도·습도·난이도·크기·matureSize)은 `scripts/convert_nongsaro.py`가 만든다. **손으로 고치지 말고** 규칙을 바꾼 뒤 스크립트를 다시 돌린다. 규칙을 바꾸면 `docs/data-rules.md`도 같이 고친다.
+- CSV 값이 빈 항목은 AI 초안 값을 유지하고 `sourceNote`에 적는다.
+- `data/plants_nongsaro.csv` 원본은 절대 수정하지 않는다.
 
 ## 추천 로직 (`js/recommend.js`)
 

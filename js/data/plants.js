@@ -20,12 +20,12 @@ window.PLANTS = [
     image: null,
     summary: "구멍 뚫린 큰 잎이 매력적인 인기 관엽식물",
     lifespan: "다년생 · 관리하면 10년 이상",
-    matureSize: "실내 1~2m",
-    light: 2, waterDays: 7, tempMin: 18, tempMax: 27, humidity: 2,
+    matureSize: "높이 약 150cm · 폭 약 100cm",
+    light: 2, waterDays: 4, tempMin: 16, tempMax: 20, humidity: 3,
     difficulty: 1, petSafe: false, size: 3,
     price: 35000,
     flowerLanguage: "웅장한 계획",
-    source: "AI 초안"
+    source: "농사로 공공데이터"
   },
   {
     id: "sansevieria",
@@ -34,12 +34,12 @@ window.PLANTS = [
     image: null,
     summary: "곧게 뻗은 잎, 물을 자주 안 줘도 잘 버티는 식물",
     lifespan: "다년생 · 관리하면 10년 이상",
-    matureSize: "30~90cm",
-    light: 1, waterDays: 21, tempMin: 15, tempMax: 30, humidity: 1,
+    matureSize: "높이 약 70cm · 폭 약 30cm",
+    light: 1, waterDays: 7, tempMin: 21, tempMax: 25, humidity: 2,
     difficulty: 1, petSafe: false, size: 2,
     price: 20000,
     flowerLanguage: "관용",
-    source: "AI 초안"
+    source: "농사로 공공데이터"
   },
   {
     id: "rosemary",
@@ -62,12 +62,12 @@ window.PLANTS = [
     image: null,
     summary: "윤기 나는 동글한 잎, 그늘과 건조에 강한 식물",
     lifespan: "다년생 · 관리하면 10년 이상",
-    matureSize: "60~90cm",
-    light: 1, waterDays: 21, tempMin: 15, tempMax: 28, humidity: 1,
+    matureSize: "높이 약 60cm · 폭 약 30cm",
+    light: 2, waterDays: 7, tempMin: 16, tempMax: 20, humidity: 2,
     difficulty: 1, petSafe: false, size: 2,
     price: 25000,
     flowerLanguage: null,
-    source: "AI 초안"
+    source: "농사로 공공데이터"
   },
   {
     id: "pothos",
@@ -76,12 +76,13 @@ window.PLANTS = [
     image: null,
     summary: "덩굴로 늘어지며 자라는, 초보자에게 유명한 식물",
     lifespan: "다년생",
-    matureSize: "덩굴 1~3m",
-    light: 1, waterDays: 7, tempMin: 15, tempMax: 29, humidity: 2,
+    matureSize: "높이 약 20cm · 폭 약 30cm",
+    light: 1, waterDays: 7, tempMin: 21, tempMax: 25, humidity: 2,
     difficulty: 1, petSafe: false, size: 1,
     price: 12000,
     flowerLanguage: null,
-    source: "AI 초안"
+    source: "농사로 공공데이터",
+    sourceNote: "CSV에 값이 없어 AI 초안 유지: 난이도"
   },
   {
     id: "spathiphyllum",
@@ -90,12 +91,12 @@ window.PLANTS = [
     image: null,
     summary: "하얀 꽃이 피고, 물이 부족하면 잎이 처져서 알려주는 식물",
     lifespan: "다년생",
-    matureSize: "40~70cm",
-    light: 1, waterDays: 5, tempMin: 18, tempMax: 27, humidity: 3,
-    difficulty: 1, petSafe: false, size: 2,
+    matureSize: "높이 약 40cm · 폭 약 30cm",
+    light: 1, waterDays: 7, tempMin: 21, tempMax: 25, humidity: 2,
+    difficulty: 2, petSafe: false, size: 1,
     price: 18000,
     flowerLanguage: "세심한 사랑",
-    source: "AI 초안"
+    source: "농사로 공공데이터"
   },
   {
     id: "rubber-plant",
@@ -118,12 +119,12 @@ window.PLANTS = [
     image: null,
     summary: "도톰한 잎에 별 모양 꽃이 모여 피는 덩굴 식물",
     lifespan: "다년생 · 관리하면 10년 이상",
-    matureSize: "덩굴 1~2m",
-    light: 2, waterDays: 14, tempMin: 16, tempMax: 27, humidity: 2,
+    matureSize: "높이 약 20cm · 폭 약 30cm",
+    light: 2, waterDays: 7, tempMin: 21, tempMax: 25, humidity: 2,
     difficulty: 2, petSafe: true, size: 1,
     price: 15000,
     flowerLanguage: null,
-    source: "AI 초안"
+    source: "농사로 공공데이터"
   },
   {
     id: "calathea",
@@ -146,12 +147,12 @@ window.PLANTS = [
     image: null,
     summary: "가는 잎 사이로 아기 포기가 매달려 자라는 식물",
     lifespan: "다년생",
-    matureSize: "30~60cm",
-    light: 2, waterDays: 7, tempMin: 15, tempMax: 27, humidity: 2,
+    matureSize: "높이 약 30cm · 폭 약 30cm",
+    light: 2, waterDays: 7, tempMin: 16, tempMax: 20, humidity: 2,
     difficulty: 1, petSafe: true, size: 1,
     price: 10000,
     flowerLanguage: null,
-    source: "AI 초안"
+    source: "농사로 공공데이터"
   },
   {
     id: "aloe",
@@ -216,12 +217,12 @@ window.PLANTS = [
     image: null,
     summary: "손바닥 모양 잎이 시원하게 퍼지는, 키우기 쉬운 나무",
     lifespan: "다년생 · 관리하면 10년 이상",
-    matureSize: "실내 1~2m",
-    light: 2, waterDays: 10, tempMin: 16, tempMax: 27, humidity: 2,
-    difficulty: 1, petSafe: true, size: 3,
+    matureSize: "높이 약 200cm · 폭 약 50cm",
+    light: 2, waterDays: 7, tempMin: 21, tempMax: 25, humidity: 2,
+    difficulty: 2, petSafe: true, size: 3,
     price: 30000,
     flowerLanguage: null,
-    source: "AI 초안"
+    source: "농사로 공공데이터"
   },
   {
     id: "dracaena-fragrans",
@@ -230,12 +231,12 @@ window.PLANTS = [
     image: null,
     summary: "굵은 줄기 위로 길쭉한 잎이 나는 이름부터 좋은 식물",
     lifespan: "다년생 · 관리하면 10년 이상",
-    matureSize: "1~2m",
-    light: 2, waterDays: 10, tempMin: 16, tempMax: 27, humidity: 2,
-    difficulty: 1, petSafe: false, size: 2,
+    matureSize: "높이 약 200cm · 폭 약 50cm",
+    light: 2, waterDays: 4, tempMin: 21, tempMax: 25, humidity: 2,
+    difficulty: 1, petSafe: false, size: 3,
     price: 20000,
     flowerLanguage: null,
-    source: "AI 초안"
+    source: "농사로 공공데이터"
   },
   {
     id: "table-palm",
@@ -244,12 +245,12 @@ window.PLANTS = [
     image: null,
     summary: "작은 야자 모양, 조금 어두운 실내에서도 잘 자라는 식물",
     lifespan: "다년생",
-    matureSize: "60~120cm",
-    light: 1, waterDays: 7, tempMin: 18, tempMax: 27, humidity: 2,
-    difficulty: 1, petSafe: true, size: 2,
+    matureSize: "높이 약 200cm · 폭 약 50cm",
+    light: 2, waterDays: 4, tempMin: 21, tempMax: 25, humidity: 2,
+    difficulty: 1, petSafe: true, size: 3,
     price: 15000,
     flowerLanguage: null,
-    source: "AI 초안"
+    source: "농사로 공공데이터"
   },
   {
     id: "areca-palm",
@@ -258,12 +259,12 @@ window.PLANTS = [
     image: null,
     summary: "시원하게 퍼지는 잎, 넓은 거실에 어울리는 야자",
     lifespan: "다년생",
-    matureSize: "실내 1.5~2m",
-    light: 2, waterDays: 7, tempMin: 18, tempMax: 27, humidity: 3,
+    matureSize: "높이 약 200cm · 폭 약 100cm",
+    light: 2, waterDays: 7, tempMin: 21, tempMax: 25, humidity: 2,
     difficulty: 2, petSafe: true, size: 3,
     price: 40000,
     flowerLanguage: null,
-    source: "AI 초안"
+    source: "농사로 공공데이터"
   },
   {
     id: "fiddle-leaf-fig",
@@ -272,12 +273,12 @@ window.PLANTS = [
     image: null,
     summary: "바이올린 모양 큰 잎, 자리를 옮기면 예민해지는 나무",
     lifespan: "다년생 · 관리하면 10년 이상",
-    matureSize: "실내 1.5~3m",
-    light: 3, waterDays: 10, tempMin: 16, tempMax: 27, humidity: 2,
-    difficulty: 3, petSafe: false, size: 3,
+    matureSize: "높이 약 200cm · 폭 약 70cm",
+    light: 2, waterDays: 7, tempMin: 16, tempMax: 20, humidity: 2,
+    difficulty: 1, petSafe: false, size: 3,
     price: 45000,
     flowerLanguage: null,
-    source: "AI 초안"
+    source: "농사로 공공데이터"
   },
   {
     id: "olive",
