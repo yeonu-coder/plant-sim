@@ -354,6 +354,11 @@ def convert(text, plants, conversions):
 
 
 def main():
+    # CSV 원본은 저장소에 올리지 않아요 → 없으면 받는 곳을 안내하고 끝내요
+    if not CSV_FILE.exists():
+        print(f"CSV 원본이 없어요: {CSV_FILE.relative_to(ROOT)}")
+        print("README.md의 '데이터 출처'를 보고 원본을 받아 이 위치에 넣어 주세요.")
+        sys.exit(1)
     rows = read_csv()
     text, plants = read_plants_js()
     conversions = check(rows, plants)

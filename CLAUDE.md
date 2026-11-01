@@ -49,7 +49,7 @@ plant-sim/
 │   ├── sprout/           # 새싹 성장 단계 SVG (stage1.svg ~ stage5.svg)
 │   └── plants/           # 나중에 실제 식물 이미지 넣을 곳 (처음엔 비어있음)
 ├── data/
-│   └── plants_nongsaro.csv   # 농사로 공공데이터 원본 (cp949, 절대 수정 금지)
+│   └── plants_nongsaro.csv   # 농사로 공공데이터 원본 (cp949, 절대 수정 금지, .gitignore로 저장소에 안 올림)
 ├── scripts/
 │   └── convert_nongsaro.py   # CSV 점검 + plants.js 조건값 변환 (python3)
 └── docs/

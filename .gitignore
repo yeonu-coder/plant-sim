@@ -1,2 +1,5 @@
 # 윈도우에서 내려받은 파일에 붙는 부가 정보
 *:Zone.Identifier
+
+# 농사로 CSV 원본: 재배포 조건을 확인하지 못해서 저장소에 올리지 않아요 (README의 '데이터 출처' 참고)
+data/plants_nongsaro.csv
