@@ -520,6 +520,10 @@ button {
   padding: 24px 20px;
 }
 
+#adopt-btn {
+  margin-top: 24px;
+}
+
 .detail-close {
   position: absolute;
   top: 12px;
@@ -634,16 +638,18 @@ button {
   margin: 12px 0 16px;
 }
 
+/* 카드·목록 바로 아래 버튼은 24px 띄워요 (위아래 여백은 큰 쪽 하나만 적용돼요) */
 .button-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 8px;
+  margin-top: 24px;
   margin-bottom: 12px;
 }
 
 .collection-link {
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 .demo-note {
@@ -667,7 +673,7 @@ button {
 .shop-list {
   display: grid;
   gap: 10px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .shop-btn {
@@ -822,7 +828,7 @@ button {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .collection-cell {
