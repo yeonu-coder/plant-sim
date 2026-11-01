@@ -113,11 +113,13 @@ button {
   margin-bottom: 28px;
 }
 
-.hero-sprout {
-  font-size: 4.5rem;
-  line-height: 1;
-  margin-bottom: 12px;
-  display: inline-block;
+/* 새싹 모양 "MY" 로고 */
+.hero-logo {
+  display: block;
+  width: 132px;
+  max-width: 45vw;
+  height: auto;
+  margin: 0 auto 8px;
   animation: sway 2.4s ease-in-out infinite;
   transform-origin: bottom center;
 }
