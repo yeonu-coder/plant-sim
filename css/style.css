@@ -157,9 +157,12 @@ button {
   transition: border-color 0.2s, background 0.2s, transform 0.1s;
 }
 
-.level-btn:hover {
-  border-color: var(--green);
-  background: var(--green-light);
+/* hover는 마우스가 있는 기기에서만 (터치 화면에서 눌렀던 자리에 테두리가 남지 않게) */
+@media (hover: hover) {
+  .level-btn:hover {
+    border-color: var(--green);
+    background: var(--green-light);
+  }
 }
 
 .level-btn:active {
@@ -186,8 +189,10 @@ button {
   color: #fff;
 }
 
-.btn-main:hover {
-  background: var(--green-dark);
+@media (hover: hover) {
+  .btn-main:hover {
+    background: var(--green-dark);
+  }
 }
 
 /* ===== 게임 화면 ===== */
@@ -326,9 +331,11 @@ button {
   transition: border-color 0.2s, background 0.2s, transform 0.1s;
 }
 
-.option-btn:hover {
-  border-color: var(--green);
-  background: var(--green-light);
+@media (hover: hover) {
+  .option-btn:hover {
+    border-color: var(--green);
+    background: var(--green-light);
+  }
 }
 
 .option-btn:active {
@@ -677,10 +684,16 @@ button {
   transition: border-color 0.2s, background 0.2s;
 }
 
-.shop-btn:hover,
 .shop-btn[aria-checked="true"] {
   border-color: var(--green);
   background: var(--green-light);
+}
+
+@media (hover: hover) {
+  .shop-btn:hover {
+    border-color: var(--green);
+    background: var(--green-light);
+  }
 }
 
 .shop-emoji {
@@ -824,8 +837,10 @@ button {
   border-radius: 14px;
 }
 
-.collection-cell.is-owned:hover {
-  border-color: var(--green);
+@media (hover: hover) {
+  .collection-cell.is-owned:hover {
+    border-color: var(--green);
+  }
 }
 
 .collection-image {
