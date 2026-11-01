@@ -214,10 +214,6 @@ button {
   font-size: 1.2rem;
 }
 
-.back-btn:disabled {
-  visibility: hidden;
-}
-
 .progress {
   flex: 1;
   display: flex;
@@ -338,8 +334,34 @@ button {
   }
 }
 
+/* 고른 선택지: 초록 테두리 (터치 화면에서도 보여요) */
+.option-btn[aria-checked="true"] {
+  border-color: var(--green);
+  background: var(--green-light);
+}
+
 .option-btn:active {
   transform: scale(0.98);
+}
+
+/* 질문 카드 아래 [이전] [다음] */
+.game-nav {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.game-nav .btn {
+  flex: 1;
+  padding: 0 12px;
+}
+
+.game-nav .btn-main {
+  flex: 2;
+}
+
+#game-done .muted {
+  margin-bottom: 0;
 }
 
 .option-emoji {

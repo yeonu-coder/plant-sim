@@ -50,7 +50,6 @@
     <!-- 2. 시뮬레이션 게임 화면 -->
     <section id="screen-game" class="screen">
       <div class="game-top">
-        <button class="back-btn" id="back-btn" aria-label="이전 질문">←</button>
         <div class="progress">
           <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
           <span class="progress-text" id="progress-text"></span>
@@ -67,14 +66,19 @@
       <div class="card" id="question-card">
         <span class="action-chip" id="question-action"></span>
         <h2 class="card-title" id="question-text"></h2>
-        <div class="option-list" id="option-list"></div>
+        <div class="option-list" id="option-list" role="radiogroup" aria-labelledby="question-text"></div>
       </div>
 
       <!-- 다 자랐을 때 -->
       <div class="card center" id="game-done" hidden>
         <h2 class="card-title">새싹이 다 자랐어요! 🌸</h2>
         <p class="muted">이제 나에게 맞는 식물을 알아볼까요?</p>
-        <button class="btn btn-main" data-go="screen-result">추천 결과 보기</button>
+      </div>
+
+      <!-- [이전] [다음]: 첫 질문에서는 [처음으로], 마지막 질문에서는 [다 키웠어요!] -->
+      <div class="game-nav">
+        <button class="btn btn-sub" id="prev-btn">이전</button>
+        <button class="btn btn-main" id="next-btn" disabled>다음</button>
       </div>
     </section>
 

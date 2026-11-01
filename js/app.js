@@ -71,7 +71,6 @@ function renderGame() {
   // 진행 막대
   document.getElementById("progress-fill").style.width = (state.step / total) * 100 + "%";
   document.getElementById("progress-text").textContent = Math.min(state.step + 1, total) + " / " + total;
-  document.getElementById("back-btn").disabled = state.step === 0;
 
   // 새싹 그림
   const stage = stageFor(state.step);
@@ -80,10 +79,20 @@ function renderGame() {
 
   document.getElementById("question-card").hidden = done;
   document.getElementById("game-done").hidden = !done;
-  if (done) return;
+
+  // 아래 버튼 이름: 첫 질문은 [처음으로], 마지막 질문은 [다 키웠어요!], 다 자라면 [추천 결과 보기]
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
+  prevBtn.textContent = state.step === 0 ? "처음으로" : "이전";
+  if (done) {
+    nextBtn.textContent = "추천 결과 보기";
+    nextBtn.disabled = false;
+    return;
+  }
 
   // 질문과 선택지
   const q = QUESTIONS[state.step];
+  nextBtn.textContent = state.step === total - 1 ? "다 키웠어요!" : "다음";
   document.getElementById("question-action").textContent = q.icon + " " + q.action;
   document.getElementById("question-text").textContent = q.text;
 
@@ -92,26 +101,52 @@ function renderGame() {
   q.options.forEach((option) => {
     const btn = document.createElement("button");
     btn.className = "option-btn";
+    btn.setAttribute("role", "radio");
     btn.innerHTML = '<span class="option-emoji"></span><span></span>';
     btn.children[0].textContent = option.emoji;
     btn.children[1].textContent = option.label;
-    btn.addEventListener("click", () => answer(q.key, option.value));
+    btn.addEventListener("click", () => pickOption(q.key, option.value));
     list.appendChild(btn);
   });
+  markPicked(q);
 }
 
-function answer(key, value) {
+// 고른 답에 초록 표시. 아무것도 안 골랐으면 [다음]은 못 눌러요
+function markPicked(q) {
+  const picked = state.answers[q.key];
+  document.querySelectorAll("#option-list .option-btn").forEach((btn, i) => {
+    btn.setAttribute("aria-checked", String(q.options[i].value === picked));
+  });
+  document.getElementById("next-btn").disabled = picked === undefined;
+}
+
+// 선택지를 누르면 고르기만 하고, 넘어가는 건 [다음]에서
+function pickOption(key, value) {
   state.answers[key] = value;
+  markPicked(QUESTIONS[state.step]);
+}
+
+document.getElementById("next-btn").addEventListener("click", () => {
+  if (state.step >= QUESTIONS.length) {
+    showScreen("screen-result");
+    return;
+  }
+  if (state.answers[QUESTIONS[state.step].key] === undefined) return;
   state.step += 1;
   renderGame();
   playGrow();
-}
+});
 
-// 이전 질문으로 돌아가기
-document.getElementById("back-btn").addEventListener("click", () => {
-  if (state.step === 0) return;
+// 이전 질문으로 (전에 고른 답은 지우지 않고 그대로 보여 줘요). 첫 질문에서는 시작 화면으로
+document.getElementById("prev-btn").addEventListener("click", () => {
+  if (state.step === 0) {
+    // 게임을 그만두는 것이라, 다 답하지 않은 상태로 결과 화면에 가지 않게 비워요
+    state.level = null;
+    state.answers = {};
+    showScreen("screen-start");
+    return;
+  }
   state.step -= 1;
-  delete state.answers[QUESTIONS[state.step].key];
   renderGame();
 });
 
