@@ -113,12 +113,11 @@ button {
   margin-bottom: 28px;
 }
 
-/* 새싹 모양 "MY" 로고 */
+/* MyP 로고: 휴대폰에서 너무 크지 않게 높이로 맞춰요 (360px 폭 → 약 79px) */
 .hero-logo {
   display: block;
-  width: 132px;
-  max-width: 45vw;
-  height: auto;
+  height: clamp(64px, 22vw, 96px);
+  width: auto;
   margin: 0 auto 8px;
   animation: sway 2.4s ease-in-out infinite;
   transform-origin: bottom center;
@@ -130,7 +129,9 @@ button {
 }
 
 .title {
-  font-size: 2rem;
+  font-family: "Yeon Sung", sans-serif;
+  font-weight: 400;
+  font-size: 2.4rem;
   color: var(--green-dark);
   margin-bottom: 8px;
 }
